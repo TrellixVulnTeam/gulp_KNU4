@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+   <!-- За допомогою плагіна ми будемо з'єднювати хтмл файли в один -->
+   <!-- Сінтаксіс: @@include('html/head.html',{ Параметри }) -->
+   @@include('html/head.html', { "title":"Головна" })
+
+   <body>
+      @@include('html/header.html', {})
+      <main>
+         <span>
+            <img width="150" src="@img/image.jpg" alt="mans photo" />
+         </span>
+
+         <span>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni
+            quibusdam qui temporibus ipsam in, sit veritatis ut veniam
+            praesentium incidunt numquam enim laudantium quis esse itaque
+            sapiente ea corporis reiciendis.
+         </span>
+      </main>
+      @@include('html/footer.html', {})
+
+      <script src="js/app.min.js"></script>
+   </body>
+</html>

@@ -1,0 +1,21 @@
+body {
+   background-color: #000;
+   color: #fff;
+   span {
+      color: red;
+   }
+   // background: url("@img/image.jpg") 0 0 no-repeat;
+}
+
+@media (max-width: 768px) {
+   // Перевірка збірки групування медіа запитів - робе :)
+   span {
+      font-size: 22px;
+   }
+}
+
+@media (max-width: 768px) {
+   body {
+      background-color: green;
+   }
+}
