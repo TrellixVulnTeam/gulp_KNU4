@@ -20,6 +20,7 @@ import { server } from './gulp/tasks/server.js';
 import { scss } from './gulp/tasks/scss.js';
 import { js } from './gulp/tasks/js.js';
 import { images } from './gulp/tasks/images.js';
+import { otfToTtf, ttfToWoff, fontsStyle } from './gulp/tasks/fonts.js';
 
 // Пишемо функцію стеження (спостерігач) за змінами файлів:
 function watcher() {
@@ -33,8 +34,14 @@ function watcher() {
 
 // Побудова сценарію виконання завдань: ------------------------------------------------------------------------
 
-// Пишемо паралельний сценарій подій замість послідовного series():
-const mainTasks = gulp.parallel(copy, html, scss, js, images);
+// Важливо щоб задачі шрифтів виконувалися послідовно:
+const fonts = gulp.series(otfToTtf, ttfToWoff, fontsStyle);
+
+// Спочатку виконуємо задачу шрифтів, а після паралельно інші:
+const mainTasks = gulp.series(
+   fonts,
+   gulp.parallel(copy, html, scss, js, images)
+);
 
 // Налаштовуємо галп в двох режимах, розробника та продакшн
 // Метод series() - виконання задач послідовно:

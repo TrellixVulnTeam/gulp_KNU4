@@ -1,13 +1,45 @@
-.no-webp body {
-  background: url("img/image.jpg") 0 0 no-repeat; }
+@font-face {
+  font-family: CormorantUpright;
+  font-display: swap;
+  src: url("../fonts/CormorantUpright-Bold.woff2") format("woff2"), url("../fonts/CormorantUpright-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: CormorantUpright;
+  font-display: swap;
+  src: url("../fonts/CormorantUpright-Regular.woff2") format("woff2"), url("../fonts/CormorantUpright-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: CormorantUpright;
+  font-display: swap;
+  src: url("../fonts/CormorantUpright-SemiBold.woff2") format("woff2"), url("../fonts/CormorantUpright-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: TTTrailers;
+  font-display: swap;
+  src: url("../fonts/TTTrailers-Regular.woff2") format("woff2"), url("../fonts/TTTrailers-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
 
 body {
+  font-family: CormorantUpright;
+  font-size: 30px;
   background-color: #000;
   color: #fff;
 }
 
 body span {
-  color: red;
+  color: rgb(146, 109, 231);
+  letter-spacing: 2px;
 }
 
 @media (max-width: 768px) {
@@ -19,5 +51,3 @@ body span {
     background-color: green;
   }
 }
-
-.webp body { background: url(img/image.webp) 0 0 no-repeat; }

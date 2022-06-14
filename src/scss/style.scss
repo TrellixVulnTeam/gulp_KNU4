@@ -1,8 +1,14 @@
+@import "fonts";
+
 body {
+   font-family: CormorantUpright;
+   font-size: 30px;
+
    background-color: #000;
    color: #fff;
    span {
-      color: red;
+      color: rgb(146, 109, 231);
+      letter-spacing: 2px;
    }
    // background: url("@img/image.jpg") 0 0 no-repeat;
 }
