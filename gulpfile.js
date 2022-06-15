@@ -21,6 +21,7 @@ import { scss } from './gulp/tasks/scss.js';
 import { js } from './gulp/tasks/js.js';
 import { images } from './gulp/tasks/images.js';
 import { otfToTtf, ttfToWoff, fontsStyle } from './gulp/tasks/fonts.js';
+import { svgSpriteTask } from './gulp/tasks/svg-sprite.js';
 
 // Пишемо функцію стеження (спостерігач) за змінами файлів:
 function watcher() {
@@ -31,6 +32,9 @@ function watcher() {
    gulp.watch(path.watch.js, js);
    gulp.watch(path.watch.images, images);
 }
+
+// Визиваємо конверт іконок вручну в консолі за потребою - не пишемо в загальний сценарій
+export { svgSpriteTask };
 
 // Побудова сценарію виконання завдань: ------------------------------------------------------------------------
 
