@@ -4,34 +4,40 @@ import versionNumber from 'gulp-version-number'; // Додаємо до адре
 //також буде створюватись файл с цим ключем: gulp / vestion.json
 
 export const html = () => {
-   return app.gulp
-      .src(app.path.src.html)
-      .pipe(
-         app.plugins.plumber(
-            app.plugins.notify.onError({
-               title: 'HTML',
-               messege: 'Error: <%= error.message %>',
-            })
+   return (
+      app.gulp
+         .src(app.path.src.html)
+         .pipe(
+            app.plugins.plumber(
+               app.plugins.notify.onError({
+                  title: 'HTML',
+                  messege: 'Error: <%= error.message %>',
+               })
+            )
          )
-      )
-      .pipe(fileinclude())
-      .pipe(app.plugins.replace(/@img\//g, 'img/'))
-      .pipe(webpHtmlNosvg())
-      .pipe(
-         versionNumber({
-            'value': '%DT%',
-            'append': {
-               'key': '_v',
-               'cover': 0,
-               'to': ['css', 'js'],
-            },
-            'output': {
-               'file': 'gulp/vestion.json',
-            },
-         })
-      )
-      .pipe(app.gulp.dest(app.path.build.html))
-      .pipe(app.plugins.browsersync.stream());
+         .pipe(fileinclude())
+         .pipe(app.plugins.replace(/@img\//g, 'img/'))
+         // Додали умоми if, щоб деякі функції виконувалися тільки в режими продакшн:
+         .pipe(app.plugins.if(app.isBuild, webpHtmlNosvg()))
+         .pipe(
+            app.plugins.if(
+               app.isBuild,
+               versionNumber({
+                  'value': '%DT%',
+                  'append': {
+                     'key': '_v',
+                     'cover': 0,
+                     'to': ['css', 'js'],
+                  },
+                  'output': {
+                     'file': 'gulp/vestion.json',
+                  },
+               })
+            )
+         )
+         .pipe(app.gulp.dest(app.path.build.html))
+         .pipe(app.plugins.browsersync.stream())
+   );
 
    // .src() - метод галп, отримує доступ к файлам по вказаному шляху
    // .pipe() - читання з одного файлу, та запис цих даних в інший файл

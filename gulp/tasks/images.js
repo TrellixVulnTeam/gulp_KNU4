@@ -16,24 +16,37 @@ export const images = () => {
          // Перевіряєм картинки в папці з результатом: обробляти тільки ті, які змінилися, або яких немає:
          .pipe(app.plugins.newer(app.path.build.images))
 
+         // функції нижче виконуємо тільки в режимі продакшн, додавая умови if
+
          // Створюємо формат webp:
-         .pipe(webp())
+         .pipe(app.plugins.if(app.isBuild, webp()))
          // Вигружаємо webp в папку з результатом, але потім продовжуємо:
-         .pipe(app.gulp.dest(app.path.build.images))
+         .pipe(
+            app.plugins.if(app.isBuild, app.gulp.dest(app.path.build.images))
+         )
 
          // Знов звертаємось до вихидних файлів, та перевіряємо на оновлення:
-         .pipe(app.gulp.src(app.path.src.images))
-         .pipe(app.plugins.newer(app.path.build.images))
+         .pipe(app.plugins.if(app.isBuild, app.gulp.src(app.path.src.images)))
+         .pipe(
+            app.plugins.if(
+               app.isBuild,
+               app.plugins.newer(app.path.build.images)
+            )
+         )
 
          // Стискаємо зображення:
          .pipe(
-            imagemin({
-               progressive: true,
-               svgoPlugins: [{ removeViewBox: false }],
-               interlaced: true,
-               optimizationLevel: 3, // 0 to 7
-            })
+            app.plugins.if(
+               app.isBuild,
+               imagemin({
+                  progressive: true,
+                  svgoPlugins: [{ removeViewBox: false }],
+                  interlaced: true,
+                  optimizationLevel: 3, // 0 to 7
+               })
+            )
          )
+
          // Вигружаємо:
          .pipe(app.gulp.dest(app.path.build.images))
 

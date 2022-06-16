@@ -12,7 +12,8 @@ const sass = gulpSass(dartSass); // Визиваєм gulpSass вказуючи d
 export const scss = () => {
    return (
       app.gulp
-         .src(app.path.src.scss, { sourcemaps: true })
+         // Якщо ми в режимі розробника, тоді app.isDev поверне true
+         .src(app.path.src.scss, { sourcemaps: app.isDev })
          .pipe(
             app.plugins.plumber(
                app.plugins.notify.onError({
@@ -28,23 +29,33 @@ export const scss = () => {
                outputStyle: 'expanded',
             })
          )
-         .pipe(groupCssMediaQueries())
+
+         // Виконуємо деякі функції тільки в режимі продакшн, додаємо плагін if:
+         .pipe(app.plugins.if(app.isBuild, groupCssMediaQueries()))
          .pipe(
-            webpcss({
-               webpClass: '.webp',
-               noWebpClass: '.no-webp',
-            })
+            app.plugins.if(
+               app.isBuild,
+               webpcss({
+                  webpClass: '.webp',
+                  noWebpClass: '.no-webp',
+               })
+            )
          )
          .pipe(
-            autoprefixer({
-               grid: true,
-               overrideBrowsersList: ['last 3 versions'],
-               cascade: true,
-            })
+            app.plugins.if(
+               app.isBuild,
+               autoprefixer({
+                  grid: true,
+                  overrideBrowsersList: ['last 3 versions'],
+                  cascade: true,
+               })
+            )
          )
+
          // Вигрузить стилі до стискання, якщо треба розкоментити:
          .pipe(app.gulp.dest(app.path.build.css))
-         .pipe(cleanCss())
+         .pipe(app.plugins.if(app.isBuild, cleanCss()))
+
          .pipe(
             rename({
                extname: '.min.css',

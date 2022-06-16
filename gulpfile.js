@@ -7,6 +7,9 @@ import { plugins } from './gulp/config/plugins.js';
 
 // Створюємо глобальний об'єкт (node js) для збереження властивостей, для доступу з різних файлів:
 global.app = {
+   // Чи зберігає змінна process флаг --build:
+   isBuild: process.argv.includes('--build'),
+   isDev: !process.argv.includes('--build'),
    path: path,
    gulp: gulp,
    plugins: plugins,
@@ -22,12 +25,15 @@ import { js } from './gulp/tasks/js.js';
 import { images } from './gulp/tasks/images.js';
 import { otfToTtf, ttfToWoff, fontsStyle } from './gulp/tasks/fonts.js';
 import { svgSpriteTask } from './gulp/tasks/svg-sprite.js';
+import { zip } from './gulp/tasks/zip.js';
+import { ftpTask } from './gulp/tasks/ftp-task.js';
 
 // Пишемо функцію стеження (спостерігач) за змінами файлів:
 function watcher() {
    // Вказуємо шлях до файлів, за якими стежити, та через кому дію, яку потрибно виконати:
+   // Якщо треба одразу вантажити замінити html, sccs... на gulp.series(html, ftpTask)
    gulp.watch(path.watch.files, copy);
-   gulp.watch(path.watch.html, html);
+   gulp.watch(path.watch.html, html); // Якщо треба одразу вантажити замінити html на gulp.series(html, ftpTask)
    gulp.watch(path.watch.scss, scss);
    gulp.watch(path.watch.js, js);
    gulp.watch(path.watch.images, images);
@@ -50,6 +56,15 @@ const mainTasks = gulp.series(
 // Налаштовуємо галп в двох режимах, розробника та продакшн
 // Метод series() - виконання задач послідовно:
 const dev = gulp.series(reset, mainTasks, gulp.parallel(watcher, server));
+const build = gulp.series(reset, mainTasks);
+const deployZip = gulp.series(reset, mainTasks, zip);
+const deployFtp = gulp.series(reset, mainTasks, ftpTask);
+
+// Експорт сценарієв щоб їх було видно зовні:
+export { dev };
+export { build };
+export { deployZip };
+export { deployFtp };
 
 // Виконування сценарію за замовчанням:
 gulp.task('default', dev);
