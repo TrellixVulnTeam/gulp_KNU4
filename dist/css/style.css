@@ -5,7 +5,6 @@
   font-weight: 700;
   font-style: normal;
 }
-
 @font-face {
   font-family: CormorantUpright;
   font-display: swap;
@@ -13,7 +12,6 @@
   font-weight: 400;
   font-style: normal;
 }
-
 @font-face {
   font-family: CormorantUpright;
   font-display: swap;
@@ -21,7 +19,6 @@
   font-weight: 600;
   font-style: normal;
 }
-
 @font-face {
   font-family: TTTrailers;
   font-display: swap;
@@ -29,14 +26,12 @@
   font-weight: 400;
   font-style: normal;
 }
-
 body {
   font-family: CormorantUpright;
   font-size: 30px;
   background-color: #000;
   color: #fff;
 }
-
 body span {
   color: rgb(146, 109, 231);
   letter-spacing: 2px;
@@ -46,7 +41,8 @@ body span {
   span {
     font-size: 22px;
   }
-
+}
+@media (max-width: 768px) {
   body {
     background-color: green;
   }
